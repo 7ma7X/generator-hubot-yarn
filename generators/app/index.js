@@ -1,6 +1,6 @@
 'use strict'
 
-const yeoman = require('yeoman-generator')
+const Generator = require('yeoman-generator')
 const chalk = require('chalk')
 const npmName = require('npm-name')
 
@@ -40,40 +40,12 @@ function hubotEndSay () {
           '\n'
 }
 
-const HubotGenerator = yeoman.generators.Base.extend({
+module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
 
-  determineDefaultOwner: function () {
-    let userName
-    let userEmail
-
-    if (typeof (this.user.git.name) === 'function') {
-      userName = this.user.git.name()
-    } else {
-      userName = this.user.git.name
-    }
-
-    if (typeof (this.user.git.email) === 'function') {
-      userEmail = this.user.git.email()
-    } else {
-      userEmail = this.user.git.email
-    }
-
-    if (userName && userEmail) {
-      return userName + ' <' + userEmail + '>'
-    } else {
-      return 'User <user@example.com>'
-    }
-  },
-
-  determineDefaultName: function () {
-    return this._.slugify(this.appname)
-  },
-
-  defaultAdapter: 'campfire',
-  defaultDescription: 'A simple helpful robot for your Company',
-
-  constructor: function () {
-    yeoman.generators.Base.apply(this, arguments)
+    this.defaultAdapter = 'campfire',
+    this.defaultDescription = 'A simple helpful robot for your Company',
 
     // FIXME add documentation to these
     this.option('owner', {
@@ -123,9 +95,36 @@ const HubotGenerator = yeoman.generators.Base.extend({
     if (this.options.adapter === true) {
       this.env.error('Missing adapter name. Make sure to specify it like --adapter=<adapter>')
     }
-  },
+  }
 
-  initializing: function () {
+  determineDefaultOwner() {
+    let userName
+    let userEmail
+
+    if (typeof (this.user.git.name) === 'function') {
+      userName = this.user.git.name()
+    } else {
+      userName = this.user.git.name
+    }
+
+    if (typeof (this.user.git.email) === 'function') {
+      userEmail = this.user.git.email()
+    } else {
+      userEmail = this.user.git.email
+    }
+
+    if (userName && userEmail) {
+      return userName + ' <' + userEmail + '>'
+    } else {
+      return 'User <user@example.com>'
+    }
+  }
+
+  determineDefaultName() {
+    return this._.slugify(this.appname)
+  }
+
+  initializing() {
     this.pkg = require('../../package.json')
 
     this.externalScripts = [
@@ -134,119 +133,77 @@ const HubotGenerator = yeoman.generators.Base.extend({
       'hubot-redis-brain',
       'hubot-rules'
     ]
-  },
+  }
 
-  prompting: {
-    askFor: function () {
-      const done = this.async()
-      const botOwner = this.determineDefaultOwner()
+  async prompting() {
+    this.log(hubotStartSay())
 
-      const prompts = []
-      if (!this.options.owner) {
-        prompts.push({
-          name: 'botOwner',
-          message: 'Owner',
-          default: botOwner
-        })
-      }
+    const done = this.async();
+    const prompts = [
+      {
+        name: 'botOwner',
+        message: 'Owner',
+        default: this.determineDefaultOwner()
+      },
+      {
+        name: 'botName',
+        message: 'Bot name',
+        default: this.determineDefaultName()
+      },
+      {
+        name: 'botDescription',
+        message: 'Description',
+        default: this.defaultDescription
+      },
+      {
+        name: 'botAdapter',
+        message: 'Bot adapter',
+        default: this.defaultAdapter,
+        validate: function (botAdapter) {
+          const done = this.async()
 
-      this.log(hubotStartSay())
-      this.prompt(prompts, function (props) {
-        this.botOwner = this.options.owner || props.botOwner
+          if (botAdapter === 'campfire') {
+            done(null, true)
+            return
+          }
 
-        done()
-      }.bind(this))
-    },
-
-    askForBotNameAndDescription: function () {
-      const done = this.async()
-      const botName = this.determineDefaultName()
-
-      const prompts = []
-
-      if (!this.options.name) {
-        prompts.push({
-          name: 'botName',
-          message: 'Bot name',
-          default: botName
-        })
-      }
-
-      if (!this.options.description) {
-        prompts.push({
-          name: 'botDescription',
-          message: 'Description',
-          default: this.defaultDescription
-        })
-      }
-
-      this.prompt(prompts, function (props) {
-        this.botName = this.options.name || props.botName
-        this.botDescription = this.options.description || props.botDescription
-
-        done()
-      }.bind(this))
-    },
-
-    askForBotAdapter: function () {
-      const done = this.async()
-
-      const prompts = []
-      // FIXME validate argument like we do when prompting
-      if (!this.options.adapter) {
-        prompts.push({
-          name: 'botAdapter',
-          message: 'Bot adapter',
-          default: this.defaultAdapter,
-          validate: function (botAdapter) {
-            const done = this.async()
-
-            if (botAdapter === 'campfire') {
-              done(null, true)
+          const name = 'hubot-' + botAdapter
+          npmName(name, function (error, unavailable) {
+            if (error) throw error
+            if (unavailable) {
+              done("Can't find that adapter on NPM, try again?")
               return
             }
 
-            const name = 'hubot-' + botAdapter
-            npmName(name, function (error, unavailable) {
-              if (error) throw error
-              if (unavailable) {
-                done("Can't find that adapter on NPM, try again?")
-                return
-              }
-
-              done(null, true)
-            })
-          }
-        })
+            done(null, true)
+          })
+        }
       }
+    ]
 
-      this.prompt(prompts, function (props) {
-        this.botAdapter = this.options.adapter || props.botAdapter
+    this.prompt(prompts).then((props) => {
+      this.props = props;
+      done();
+    });
+  }
 
-        done()
-      }.bind(this))
-    }
-  },
+  writing() {
+    this.mkdir('bin')
+    this.copy('bin/hubot', 'bin/hubot')
+    this.copy('bin/hubot.cmd', 'bin/hubot.cmd')
 
-  writing: {
-    app: function () {
-      this.mkdir('bin')
-      this.copy('bin/hubot', 'bin/hubot')
-      this.copy('bin/hubot.cmd', 'bin/hubot.cmd')
+    this.template('Procfile', 'Procfile')
+    this.template('README.md', 'README.md')
 
-      this.template('Procfile', 'Procfile')
-      this.template('README.md', 'README.md')
+    this.write('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
 
-      this.write('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
+    this.copy('gitignore', '.gitignore')
+    this.template('_package.json', 'package.json')
 
-      this.copy('gitignore', '.gitignore')
-      this.template('_package.json', 'package.json')
+    this.directory('scripts', 'scripts')
+  }
 
-      this.directory('scripts', 'scripts')
-    }
-  },
-
-  end: function () {
+  end() {
     const packages = ['hubot'].concat(this.externalScripts).map(name => `${name}@latest`)
 
     if (this.botAdapter !== 'campfire') {
@@ -257,6 +214,4 @@ const HubotGenerator = yeoman.generators.Base.extend({
 
     this.log(hubotEndSay())
   }
-})
-
-module.exports = HubotGenerator
+}

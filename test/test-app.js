@@ -3,8 +3,8 @@
 /* global describe, before, it */
 
 var path = require('path')
-var assert = require('yeoman-generator').assert
-var helpers = require('yeoman-generator').test
+var assert = require('yeoman-assert')
+var helpers = require('yeoman-test')
 var os = require('os')
 
 describe('hubot:app', function () {
@@ -12,7 +12,7 @@ describe('hubot:app', function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .inDir(path.join(os.tmpdir(), './temp-test'))
       .withOptions({ 'skip-install': true })
-      .withPrompt({
+      .withPrompts({
         someOption: true
       })
       .on('end', done)

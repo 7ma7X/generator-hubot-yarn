@@ -1,6 +1,6 @@
 {
   "name": "generator-hubot-yarn",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Hubot generator for Yeoman (Yarn Version)",
   "license": "MIT",
   "main": "generators/app/index.js",
@@ -19,7 +19,6 @@
     "node": "> 8.0.0"
   },
   "scripts": {
-    "pretest": "standard",
     "test": "mocha --reporter spec",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -39,6 +38,7 @@
   "devDependencies": {
     "mocha": "^6.2.0",
     "semantic-release": "^15.9.6",
-    "standard": "^11.0.1"
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^2.0.0"
   }
 }
