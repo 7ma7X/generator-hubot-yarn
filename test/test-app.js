@@ -8,8 +8,8 @@ var helpers = require('yeoman-test')
 var os = require('os')
 
 describe('hubot:app', function (done) {
-  before(function () {
-    helpers.run(path.join(__dirname, '../generators/app'))
+  it('generate a project', function () {
+    return helpers.run(path.join(__dirname, '../generators/app'))
       .inDir(path.join(os.tmpdir(), './temp-test'))
       .withOptions({ skipInstall: true })
       .withPrompts({ botOwner: 'HelloRusk <k@hellorusk.net>'})
@@ -25,9 +25,8 @@ describe('hubot:app', function (done) {
           'external-scripts.json',
           '.gitignore',
           'package.json',
-          'scripts/example.js'
+          'scripts/example.coffee'
         ])
-        done()
       });
   })
 })
