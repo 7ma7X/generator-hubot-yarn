@@ -1,11 +1,11 @@
 {
-  "name": "<%= botName %>",
+  "name": "<%- botName %>",
   "version": "1.0.0",
   "private": true,
 
-  "author": "<%= botOwner %>",
+  "author": "<%- botOwner %>",
 
-  "description": "<%= botDescription %>",
+  "description": "<%- botDescription %>",
 
   "dependencies": {},
 

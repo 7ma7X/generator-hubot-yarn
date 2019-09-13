@@ -1,7 +1,11 @@
+![npm](https://img.shields.io/npm/v/generator-hubot-yarn)
+![GitHub](https://img.shields.io/github/license/7ma7X/generator-hubot-yarn)
+
 # generator-hubot-yarn
 
-WIP
-
+**Yarn-friendly** Yeoman generator for Hubot framework.  
+Although [hubotio/generator-hubot](https://github.com/hubotio/generator-hubot) is widely used as `generator-hubot`, it depends on `npm install` internally.  
+If you prefer to use Yarn in your hubot program, maybe this module is a good alternative. :thumbsup:
 
 ## Installation
 

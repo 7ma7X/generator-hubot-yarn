@@ -7,27 +7,27 @@ var assert = require('yeoman-assert')
 var helpers = require('yeoman-test')
 var os = require('os')
 
-describe('hubot:app', function () {
-  before(function (done) {
+describe('hubot:app', function (done) {
+  before(function () {
     helpers.run(path.join(__dirname, '../generators/app'))
       .inDir(path.join(os.tmpdir(), './temp-test'))
-      .withOptions({ 'skip-install': true })
-      .withPrompts({
-        someOption: true
-      })
-      .on('end', done)
-  })
-
-  it('creates files', function () {
-    assert.file([
-      'bin/hubot',
-      'bin/hubot.cmd',
-      'Procfile',
-      'README.md',
-      'external-scripts.json',
-      '.gitignore',
-      'package.json',
-      'scripts/example.js'
-    ])
+      .withOptions({ skipInstall: true })
+      .withPrompts({ botOwner: 'HelloRusk <k@hellorusk.net>'})
+      .withPrompts({ botName: 'hubot-test'})
+      .withPrompts({ botDescription: 'simple robbot'})
+      .withPrompts({ botAdapter: 'slack' })
+      .toPromise().then(function() {
+        assert.file([
+          'bin/hubot',
+          'bin/hubot.cmd',
+          'Procfile',
+          'README.md',
+          'external-scripts.json',
+          '.gitignore',
+          'package.json',
+          'scripts/example.js'
+        ])
+        done()
+      });
   })
 })

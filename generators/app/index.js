@@ -228,7 +228,10 @@ module.exports = class extends Generator {
 
     fs.writeFileSync('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
 
-    this.copy('gitignore', '.gitignore')
+    this.fs.copy(
+      this.templatePath('gitignore'),
+      this.destinationPath('.gitignore')
+    );
 
     this.fs.copyTpl(
       this.templatePath('_package.json'),
@@ -236,7 +239,10 @@ module.exports = class extends Generator {
       this.props
     );
 
-    this.copy('scripts/example.js', 'scripts/example.js')
+    this.fs.copy(
+      this.templatePath('scripts/example.coffee'),
+      this.destinationPath('scripts/example.coffee')
+    );
   }
 
   end() {
