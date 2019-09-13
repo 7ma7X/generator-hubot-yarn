@@ -3,6 +3,8 @@
 const Generator = require('yeoman-generator')
 const chalk = require('chalk')
 const npmName = require('npm-name')
+const slugify = require('slugify')
+const fs = require('fs')
 
 function hubotStartSay () {
   return '                     _____________________________  ' + '\n' +
@@ -121,7 +123,7 @@ module.exports = class extends Generator {
   }
 
   determineDefaultName() {
-    return this._.slugify(this.appname)
+    return slugify(this.appname)
   }
 
   initializing() {
@@ -188,19 +190,36 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.mkdir('bin')
+    fs.mkdirSync('bin')
+    fs.mkdirSync('scripts')
+
+    this.copy = function (source, destination) {
+      this.fs.copy(
+        this.templatePath(source),
+        this.destinationPath(destination)
+      );
+    };
+
+    this.template = function (source, destination) {
+      this.fs.copyTpl(
+        this.templatePath(source),
+        this.destinationPath(destination),
+        this
+      );
+    };
+
     this.copy('bin/hubot', 'bin/hubot')
     this.copy('bin/hubot.cmd', 'bin/hubot.cmd')
 
     this.template('Procfile', 'Procfile')
     this.template('README.md', 'README.md')
 
-    this.write('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
+    fs.writeFileSync('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
 
     this.copy('gitignore', '.gitignore')
     this.template('_package.json', 'package.json')
 
-    this.directory('scripts', 'scripts')
+    this.copy('scripts/example.js', 'scripts/example.js')
   }
 
   end() {
