@@ -1,23 +1,22 @@
 {
-  "name": "generator-hubot",
+  "name": "generator-hubot-yarn",
   "version": "0.0.0-development",
   "description": "Hubot generator for Yeoman",
   "license": "MIT",
   "main": "generators/app/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hubotio/generator-hubot.git"
+    "url": "https://github.com/7ma7X/generator-hubot-yarn.git"
   },
   "bugs": {
-    "url": "https://github.com/hubotio/generator-hubot/issues"
+    "url": "https://github.com/7ma7X/generator-hubot-yarn/issues"
   },
   "author": {
-    "name": "Josh Nichols",
-    "email": "josh@technicalpickles.com",
-    "url": "https://github.com/technicalpickles"
+    "name": "HelloRusk",
+    "email": "k@hellorusk.net"
   },
   "engines": {
-    "node": "> 4.0.0"
+    "node": "> 8.0.0"
   },
   "scripts": {
     "pretest": "standard",

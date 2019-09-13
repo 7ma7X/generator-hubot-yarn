@@ -1,17 +1,15 @@
-[![Build Status](https://travis-ci.org/hubotio/generator-hubot.svg?branch=master)](https://travis-ci.org/hubotio/generator-hubot)
+# generator-hubot-yarn
 
-# generator-hubot
-
-A [Yeoman](http://yeoman.io) generator for creating your own chatbot using the Hubot framework
+WIP
 
 
 ## Installation
 
-- `npm install -g generator-hubot`
+- `yarn global add generator-hubot-yarn`
 
 ## Usage
 
-- `yo hubot`
+- `yo hubot-yarn`
 
 ## Getting Started
 
