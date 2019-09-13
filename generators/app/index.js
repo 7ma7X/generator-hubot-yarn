@@ -202,47 +202,31 @@ module.exports = class extends Generator {
       fs.mkdirSync('scripts')
     }
 
-    this.fs.copyTpl(
-      this.templatePath('bin/hubot'),
-      this.destinationPath('bin/hubot'),
-      this.props
-    );
+    this.template = function(template, destionation) {
+      return this.fs.copyTpl(
+        this.templatePath(template),
+        this.destinationPath(destionation),
+        this.props
+      );
+    }
 
-    this.fs.copyTpl(
-      this.templatePath('bin/hubot.cmd'),
-      this.destinationPath('bin/hubot.cmd'),
-      this.props
-    );
+    this.copy = function(template, destination) {
+      return this.fs.copy(
+        this.templatePath(template),
+        this.destinationPath(destination)
+      );
+    }
 
-    this.fs.copyTpl(
-      this.templatePath('Procfile'),
-      this.destinationPath('Procfile'),
-      this.props
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('README.md'),
-      this.destinationPath('README.md'),
-      this.props
-    );
+    this.template('bin/hubot', 'bin/hubot')
+    this.template('bin/hubot.cmd', 'bin/hubot.cmd')
+    this.template('Procfile', 'Procfile')
+    this.template('README.md', 'README.md')
 
     fs.writeFileSync('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
 
-    this.fs.copy(
-      this.templatePath('gitignore'),
-      this.destinationPath('.gitignore')
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('_package.json'),
-      this.destinationPath('package.json'),
-      this.props
-    );
-
-    this.fs.copy(
-      this.templatePath('scripts/example.coffee'),
-      this.destinationPath('scripts/example.coffee')
-    );
+    this.copy('gitignore', '.gitignore')
+    this.template('_package.json', 'package.json')
+    this.copy('scripts/example.coffee', 'scripts/example.coffee')
   }
 
   end() {
