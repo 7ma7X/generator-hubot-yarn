@@ -5,8 +5,6 @@
   "author": "<%= scriptOwner %>",
   "license": "MIT",
 
-  "keywords": "<%= scriptKeywords %>",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/hubotio/<%= appname %>.git"

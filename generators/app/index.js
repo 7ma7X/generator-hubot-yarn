@@ -183,41 +183,58 @@ module.exports = class extends Generator {
       }
     ]
 
-    this.prompt(prompts).then((props) => {
+    this.answers = await this.prompt(prompts).then((props) => {
       this.props = props;
       done();
     });
   }
 
   writing() {
-    fs.mkdirSync('bin')
-    fs.mkdirSync('scripts')
+    try {
+      fs.statSync('bin')
+    } catch (e) {
+      fs.mkdirSync('bin')
+    }
 
-    this.copy = function (source, destination) {
-      this.fs.copy(
-        this.templatePath(source),
-        this.destinationPath(destination)
-      );
-    };
+    try {
+      fs.statSync('scripts')
+    } catch (e) {
+      fs.mkdirSync('scripts')
+    }
 
-    this.template = function (source, destination) {
-      this.fs.copyTpl(
-        this.templatePath(source),
-        this.destinationPath(destination),
-        this
-      );
-    };
+    this.fs.copyTpl(
+      this.templatePath('bin/hubot'),
+      this.destinationPath('bin/hubot'),
+      this.props
+    );
 
-    this.copy('bin/hubot', 'bin/hubot')
-    this.copy('bin/hubot.cmd', 'bin/hubot.cmd')
+    this.fs.copyTpl(
+      this.templatePath('bin/hubot.cmd'),
+      this.destinationPath('bin/hubot.cmd'),
+      this.props
+    );
 
-    this.template('Procfile', 'Procfile')
-    this.template('README.md', 'README.md')
+    this.fs.copyTpl(
+      this.templatePath('Procfile'),
+      this.destinationPath('Procfile'),
+      this.props
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('README.md'),
+      this.destinationPath('README.md'),
+      this.props
+    );
 
     fs.writeFileSync('external-scripts.json', JSON.stringify(this.externalScripts, undefined, 2))
 
     this.copy('gitignore', '.gitignore')
-    this.template('_package.json', 'package.json')
+
+    this.fs.copyTpl(
+      this.templatePath('_package.json'),
+      this.destinationPath('package.json'),
+      this.props
+    );
 
     this.copy('scripts/example.js', 'scripts/example.js')
   }
@@ -225,8 +242,8 @@ module.exports = class extends Generator {
   end() {
     const packages = ['hubot'].concat(this.externalScripts).map(name => `${name}@latest`)
 
-    if (this.botAdapter !== 'campfire') {
-      packages.push('hubot-' + this.botAdapter)
+    if (this.props.botAdapter !== 'campfire') {
+      packages.push('hubot-' + this.props.botAdapter)
     }
 
     this.yarnInstall(packages)
