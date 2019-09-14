@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/7ma7X/generator-hubot-yarn.svg?style=svg)](https://circleci.com/gh/7ma7X/generator-hubot-yarn)
-![npm](https://img.shields.io/npm/v/generator-hubot-yarn)
+[![npm](https://img.shields.io/npm/v/generator-hubot-yarn)](https://www.npmjs.com/package/generator-hubot-yarn)
 ![GitHub](https://img.shields.io/github/license/7ma7X/generator-hubot-yarn)
 
 # generator-hubot-yarn

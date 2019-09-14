@@ -11,7 +11,6 @@ describe('hubot:app', function (done) {
   it('generate a project', function () {
     return helpers.run(path.join(__dirname, '../generators/app'))
       .inDir(path.join(os.tmpdir(), './temp-test'))
-      .withOptions({ skipInstall: true })
       .withPrompts({ botOwner: 'HelloRusk <k@hellorusk.net>'})
       .withPrompts({ botName: 'hubot-test'})
       .withPrompts({ botDescription: 'simple robbot'})
