@@ -230,6 +230,8 @@ module.exports = class extends Generator {
   }
 
   end() {
+    fs.chmodSync(this.destinationPath('bin/hubot'), '755')
+    
     const packages = ['hubot'].concat(this.externalScripts).map(name => `${name}@latest`)
 
     if (this.props.botAdapter !== 'campfire') {

@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/7ma7X/generator-hubot-yarn.svg?style=svg)](https://circleci.com/gh/7ma7X/generator-hubot-yarn)
 [![npm](https://img.shields.io/npm/v/generator-hubot-yarn)](https://www.npmjs.com/package/generator-hubot-yarn)
+![npm-dt](https://img.shields.io/npm/dt/generator-hubot-yarn.svg)
 ![GitHub](https://img.shields.io/github/license/7ma7X/generator-hubot-yarn)
 
 # generator-hubot-yarn
@@ -10,11 +11,17 @@ If you prefer to use Yarn in your hubot program, maybe this module is a good alt
 
 ## Installation
 
-- `yarn global add generator-hubot-yarn`
+You must install `yo` & `coffeescript` in advance.
+
+```sh
+# yarn global add yo
+# yarn global add coffeescript
+yarn global add generator-hubot-yarn
+```
 
 ## Usage
 
-- `yo hubot-yarn`
+`yo hubot-yarn`
 
 ## Getting Started
 
