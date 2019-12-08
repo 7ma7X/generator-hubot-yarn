@@ -1,6 +1,10 @@
 {
   "name": "generator-hubot-yarn",
-  "version": "0.9.5",
+<<<<<<< HEAD
+  "version": "0.9.1",
+=======
+  "version": "0.8.5",
+>>>>>>> parent of cb8e773... v0.9.0
   "description": "Hubot generator for Yeoman (Yarn Version)",
   "license": "MIT",
   "main": "generators/app/index.js",

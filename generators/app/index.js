@@ -238,7 +238,7 @@ module.exports = class extends Generator {
       packages.push('hubot-' + this.props.botAdapter)
     }
 
-    this.yarnInstall(packages, {'binLinks': false})
+    this.yarnInstall(packages)
 
     this.log(hubotEndSay())
   }
