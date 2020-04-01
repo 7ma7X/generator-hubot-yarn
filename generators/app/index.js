@@ -141,23 +141,35 @@ module.exports = class extends Generator {
     this.log(hubotStartSay())
 
     const done = this.async();
-    const prompts = [
-      {
+
+    const prompts = [];
+
+    if (!this.options.owner) {
+      prompts.push({
         name: 'botOwner',
         message: 'Owner',
         default: this.determineDefaultOwner()
-      },
-      {
+      })
+    }
+
+    if (!this.options.name) {
+      prompts.push({
         name: 'botName',
         message: 'Bot name',
         default: this.determineDefaultName()
-      },
-      {
+      })
+    }
+
+    if (!this.options.description) {
+      prompts.push({
         name: 'botDescription',
         message: 'Description',
         default: this.defaultDescription
-      },
-      {
+      })
+    }
+
+    if (!this.options.adapter) {
+      prompts.push({
         name: 'botAdapter',
         message: 'Bot adapter',
         default: this.defaultAdapter,
@@ -180,16 +192,21 @@ module.exports = class extends Generator {
             done(null, true)
           })
         }
-      }
-    ]
+      })
+    }
 
-    this.answers = await this.prompt(prompts).then((props) => {
+    await this.prompt(prompts).then((props) => {
       this.props = props;
       done();
     });
   }
 
   writing() {
+    this.props.botOwner = this.options.owner || this.props.botOwner
+    this.props.botName = this.options.name || this.props.botName
+    this.props.botDescription = this.options.description || this.props.botDescription
+    this.props.botAdapter = this.options.adapter || this.props.botAdapter
+
     try {
       fs.statSync('bin')
     } catch (e) {
