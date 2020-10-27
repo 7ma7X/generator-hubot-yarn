@@ -1,7 +1,7 @@
-[![CircleCI](https://circleci.com/gh/7ma7X/generator-hubot-yarn.svg?style=svg)](https://circleci.com/gh/7ma7X/generator-hubot-yarn)
+[![CircleCI](https://circleci.com/gh/HelloRusk/generator-hubot-yarn.svg?style=svg)](https://circleci.com/gh/HelloRusk/generator-hubot-yarn)
 [![npm](https://img.shields.io/npm/v/generator-hubot-yarn)](https://www.npmjs.com/package/generator-hubot-yarn)
 ![npm-dt](https://img.shields.io/npm/dt/generator-hubot-yarn.svg)
-![GitHub](https://img.shields.io/github/license/7ma7X/generator-hubot-yarn)
+![GitHub](https://img.shields.io/github/license/HelloRusk/generator-hubot-yarn)
 
 # generator-hubot-yarn
 
